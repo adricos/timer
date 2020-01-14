@@ -1,13 +1,17 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>{{this.worOut.name}}</ion-title>
+    <ion-button slot="primary">
+      <ion-icon slot="icon-only" name="folder-open">
+      </ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-grid>
   <ion-row>
     <ion-col text-center>
-      <svg id="progress-circle" width="50vh" height="50vh" viewBox="0 0 200 200">
+      <svg id="progress-circle" width="40vh" height="40vh" viewBox="0 0 200 200">
         <linearGradient id="linearColors1" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="#ddd6f3"></stop>
           <stop offset="100%" stop-color="#faaca8"></stop>
@@ -28,9 +32,11 @@
           stroke="url(#linearColors2)" stroke-width="12" stroke-linecap="round" [attr.r]="this.engine.segmentCircleR"
           [attr.stroke-dasharray]="this.engine.segmentCircleDasharray"
           [attr.stroke-dashoffset]="this.engine.percentageOffset(this.engine.segmentPercentage | async, this.engine.segmentCircleDasharray)" />
-        <text x="40%" y="30%"></text>
-        <text x="50%" y="50%" class="timer-text">{{ this.engine.time | async}}</text>
-        <text x="50%" y="70%" class="timer-text">{{ this.engine.stride.values[this.engine.current().pace]}}</text>
+        <text x="40%" y="30%">{{ this.engine.time | async}}</text>
+        <text x="50%" y="50%" class="timer-text">{{ this.engine.segmentTime | async }}</text>
+        <text x="50%" y="68%"
+          class="timer-text">{{ this.engine.stride.values[this.engine.current().pace] | number:'1.1-1'}}</text>
+        <text x="44%" y="78%">{{ this.engine.stride.values[this.engine.next().pace] | number:'1.1-1'}}</text>
       </svg>
     </ion-col>
   </ion-row>
@@ -44,7 +50,7 @@
         {{this.engine.sToMMSS(segment.time)}}
       </ion-label>
       <ion-label class="speed-text">
-        {{this.engine.stride.values[segment.pace]}}
+        {{this.engine.stride.values[segment.pace] | number:'1.1-1'}}
       </ion-label>
       <ion-icon slot="end" name="{{paceName[segment.pace]}}"></ion-icon>
     </ion-item>
@@ -57,16 +63,16 @@
       <ion-icon name="{{paceName[this.engine.current().pace]}}"></ion-icon>
       <ion-icon name="arrow-forward"></ion-icon>
       <ion-icon name="{{paceName[this.engine.next().pace]}}"></ion-icon>
-      {{ this.engine.segmentTime | async }}
+
     </ion-title>
     <ion-button size="large" slot="primary" expand="block" color="primary" (click)="this.engine.toggleTimer()">
-      <ion-icon
+      <ion-icon slot="icon-only" 
         name="{{this.engine.state === 'pause' || this.engine.state === 'end' || this.engine.state === 'stop'? 'play' : 'pause'}}">
       </ion-icon>
     </ion-button>
     <ion-button size="large" slot="secondary" expand="block" color="primary" (click)="this.engine.stopTimer()"
       *ngIf="this.engine.state !== 'stop' && this.engine.state !== 'end'">
-      <ion-icon name="square"></ion-icon>
+      <ion-icon slot="icon-only" name="square"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-footer>

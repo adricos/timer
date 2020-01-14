@@ -38,7 +38,7 @@ export class HomePage implements OnInit {
   }
 
   scrollTo(item: number): void {
-    this.content.scrollToPoint(0, item * 48, 750);
+    this.content.scrollToPoint(0, item * 49, 750);
   }
 
 }
