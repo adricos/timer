@@ -1,29 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { WorkOutEngine } from '../workoutengine';
 import { WorkOut } from '../workout';
-import { Stride, StrideType } from '../stride';
+import { StrideType } from '../stride';
 import { PaceName } from '../pace';
+import { IonContent } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
+  @ViewChild(IonContent, {static: false}) content: IonContent;
+
   paceName = PaceName;
-  engine: WorkOutEngine;
   worOut: WorkOut = {
     name: 'Test WorkOut',
     segments: [
       { pace: 0, time: 3 },
       { pace: 1, time: 5 },
       { pace: 2, time: 4 },
-      { pace: 3, time: 6 }
+      { pace: 3, time: 2 },
+      { pace: 4, time: 2 },
+      { pace: 5, time: 2 }
     ]
   };
 
-  constructor() {
-    this.engine = new WorkOutEngine(this.worOut, StrideType.Jog);
+  constructor(
+    public engine: WorkOutEngine
+  ) {
+    engine.init(this.worOut, StrideType.Jog);
+    engine.segment$.subscribe((s: number) => this.scrollTo(s));
+  }
+
+  ngOnInit() {
+
+  }
+
+  scrollTo(item: number): void {
+    this.content.scrollToPoint(0, item * 48, 750);
   }
 
 }

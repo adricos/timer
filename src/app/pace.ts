@@ -8,10 +8,10 @@ export enum Pace {
 }
 
 export let PaceName: string[] = [
-    'Warm Up',
-    'Nice and Steady',
-    'Pick it Up',
-    'To the Max',
-    'Walk it Out',
-    'Cool Down'
+    'flame',
+    'walk',
+    'trending-up',
+    'jet',
+    'trending-down',
+    'snow'
 ];

@@ -1,7 +1,8 @@
 import { WorkOut } from './workout';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Segment } from './segment';
 import { Stride } from './stride';
+import { Injectable } from '@angular/core';
 
 const circleR = 80;
 const circleDasharray = 2 * Math.PI * circleR;
@@ -9,11 +10,15 @@ const circleDasharray = 2 * Math.PI * circleR;
 const segmentCircleR = 68;
 const segmentCircleDasharray = 2 * Math.PI * segmentCircleR;
 
+@Injectable()
 export class WorkOutEngine {
     time: BehaviorSubject<string> = new BehaviorSubject('00:00');
     percentage: BehaviorSubject<number> = new BehaviorSubject(0);
     segmentTime: BehaviorSubject<string> = new BehaviorSubject('00:00');
     segmentPercentage: BehaviorSubject<number> = new BehaviorSubject(0);
+    segment: Subject<number> = new Subject<number>();
+    segment$ = this.segment.asObservable();
+
     segments: Segment[];
     stride: Stride;
 
@@ -32,7 +37,10 @@ export class WorkOutEngine {
 
     public state: 'start' | 'stop' | 'pause' | 'end' = 'stop';
 
-    constructor(
+    constructor() {
+    }
+
+    public init(
         workOut: WorkOut,
         stride: Stride
     ) {
@@ -41,6 +49,7 @@ export class WorkOutEngine {
         this.duration = this.updateSegmentInteval();
         this.stopTimer();
     }
+
 
     private updateSegmentInteval(): number {
         let elapsedTime = 0;
@@ -67,6 +76,7 @@ export class WorkOutEngine {
             this.state = 'start';
             this.timer = 0;
             this.currentSegment = 0;
+            this.segment.next(0);
             for (const s of this.segments) {
                 s.completed = null;
             }
@@ -79,6 +89,7 @@ export class WorkOutEngine {
     public stopTimer() {
         this.timer = 0;
         this.currentSegment = 0;
+        this.segment.next(0);
         for (const s of this.segments) {
             s.completed = null;
         }
@@ -124,6 +135,7 @@ export class WorkOutEngine {
         if (this.timer > current.endTime) {
             this.segments[this.currentSegment].completed = true;
             ++this.currentSegment;
+            this.segment.next(this.currentSegment);
             if (this.currentSegment === this.segments.length) {
                 this.state = 'end';
                 clearInterval(this.interval);
