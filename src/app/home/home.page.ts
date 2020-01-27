@@ -4,7 +4,9 @@ import { WorkOut } from '../workout';
 import { StrideType } from '../stride';
 import { PaceName } from '../pace';
 import { IonContent } from '@ionic/angular';
+import * as GoogleDrive  from 'cordova-plugin-jc-googledrive/www/GoogleDrive';
 
+declare var cordova;
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
