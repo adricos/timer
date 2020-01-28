@@ -10,11 +10,15 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { WorkOutEngine } from './workoutengine';
 
+import { HTTP } from '@ionic-native/http/ngx';
+import { IonicStorageModule } from '@ionic/storage';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, IonicModule.forRoot(), IonicStorageModule.forRoot(), AppRoutingModule],
   providers: [
+    HTTP,
     StatusBar,
     WorkOutEngine,
     SplashScreen,

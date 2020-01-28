@@ -3,6 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { Segment } from './segment';
 import { Stride } from './stride';
 import { Injectable } from '@angular/core';
+import { Pace } from './pace';
 
 const circleR = 80;
 const circleDasharray = 2 * Math.PI * circleR;
@@ -16,12 +17,14 @@ export class WorkOutEngine {
     percentage: BehaviorSubject<number> = new BehaviorSubject(0);
     segmentTime: BehaviorSubject<string> = new BehaviorSubject('00:00');
     segmentPercentage: BehaviorSubject<number> = new BehaviorSubject(0);
+    segmentElapsedTime: BehaviorSubject<number> = new BehaviorSubject(0);
     segment: Subject<number> = new Subject<number>();
     segment$ = this.segment.asObservable();
 
     segments: Segment[];
     stride: Stride;
 
+    name: string;
     currentSegment: number;
 
     public duration: number;
@@ -45,12 +48,19 @@ export class WorkOutEngine {
         stride: Stride
     ) {
         this.segments = workOut.segments;
+        this.name = workOut.name;
         this.stride = stride;
         this.duration = this.updateSegmentInteval();
         this.stopTimer();
     }
 
-
+    public getSpeed(pace: Pace): number {
+        if (this.stride && this.stride.values) {
+            return this.stride.values[pace];
+        }
+        return 0;
+    }
+    
     private updateSegmentInteval(): number {
         let elapsedTime = 0;
 
@@ -58,6 +68,7 @@ export class WorkOutEngine {
             s.startTime = elapsedTime + 1;
             elapsedTime += s.time;
             s.endTime = elapsedTime;
+            s.speed = this.getSpeed(s.pace);
         });
 
         return elapsedTime;
@@ -97,16 +108,21 @@ export class WorkOutEngine {
         this.time.next('00:00');
         this.percentage.next(0);
         this.segmentPercentage.next(0);
+        this.segmentElapsedTime.next(0);
         this.segmentTime.next('00:00');
         this.state = 'stop';
     }
 
     public current(): Segment {
-        return typeof this.segments[this.currentSegment] === 'undefined' ? new Segment() : this.segments[this.currentSegment];
+        return typeof this.segments === 'undefined' || typeof this.segments[this.currentSegment] === 'undefined' ? 
+            new Segment() : 
+            this.segments[this.currentSegment];
     }
 
     public next(): Segment {
-        return typeof this.segments[this.currentSegment + 1] === 'undefined' ? new Segment() : this.segments[this.currentSegment + 1];
+        return typeof this.segments === 'undefined' || typeof this.segments[this.currentSegment + 1] === 'undefined' ? 
+            new Segment() : 
+            this.segments[this.currentSegment + 1];
     }
 
     public percentageOffset(percent: number, circle: number) {
@@ -129,6 +145,8 @@ export class WorkOutEngine {
 
         this.segmentTime.next(this.sToMMSS(elapsedTime));
         this.segmentPercentage.next(elapsedTime * 100 / current.time);
+        this.segmentElapsedTime.next(elapsedTime);
+
 
         ++this.timer;
 

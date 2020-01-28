@@ -1,8 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{this.worOut.name}}</ion-title>
-    <ion-button slot="primary">
-      <ion-icon slot="icon-only" name="folder-open">
+    <ion-select placeholder="Select Workout" #workouts interface="popover" (ionChange)="this.loadWorkout($event)"
+    disabled="{{this.engine.state !== 'end' && this.engine.state !== 'stop'}}">
+      <ion-select-option *ngFor="let item of this.workoutsArray; let i = index" value="{{i}}">{{item.name}}</ion-select-option>
+    </ion-select>
+
+    <ion-button #syncButton slot="primary" (click)="this.sync()" disabled="{{this.engine.state !== 'end' && this.engine.state !== 'stop'}}">
+      <ion-spinner *ngIf="isSyncing" name="lines-small"></ion-spinner>
+      <ion-icon *ngIf="!isSyncing" slot="icon-only" name="sync">
       </ion-icon>
     </ion-button>
   </ion-toolbar>
@@ -10,7 +15,7 @@
 
 <ion-grid>
   <ion-row>
-    <ion-col text-center>
+    <ion-col class="ion-text-center">
       <svg id="progress-circle" width="40vh" height="40vh" viewBox="0 0 200 200">
         <linearGradient id="linearColors1" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="#ddd6f3"></stop>
@@ -20,7 +25,7 @@
           <stop offset="0%" stop-color="#f3ddd6"></stop>
           <stop offset="100%" stop-color="#a8faac"></stop>
         </linearGradient>
-        <circle cx="50%" cy="50%" [attr.r]="this.engine.circleR" fill="none" stroke="#f3f3f3" stroke-width="12" />
+        <circle cx="50%" cy="50%" [attr.r]="this.engine.circleR" [attr.fill]="this.getWarningColor(this.engine.segmentElapsedTime | async)" stroke="#f3f3f3" stroke-width="12" />
         <circle cx="50%" cy="50%" fill="none" transform-origin="50% 50%" transform='rotate(-90)'
           stroke="url(#linearColors1)" stroke-width="12" stroke-linecap="round" [attr.r]="this.engine.circleR"
           [attr.stroke-dasharray]="this.engine.circleDasharray"
@@ -33,10 +38,9 @@
           [attr.stroke-dasharray]="this.engine.segmentCircleDasharray"
           [attr.stroke-dashoffset]="this.engine.percentageOffset(this.engine.segmentPercentage | async, this.engine.segmentCircleDasharray)" />
         <text x="40%" y="30%">{{ this.engine.time | async}}</text>
-        <text x="50%" y="50%" class="timer-text">{{ this.engine.segmentTime | async }}</text>
-        <text x="50%" y="68%"
-          class="timer-text">{{ this.engine.stride.values[this.engine.current().pace] | number:'1.1-1'}}</text>
-        <text x="44%" y="78%">{{ this.engine.stride.values[this.engine.next().pace] | number:'1.1-1'}}</text>
+        <text x="50%" y="50%" class="timer-text">{{ this.engine.segmentTime | async  }}</text>
+        <text x="50%" y="68%" class="timer-text">{{ this.engine.current().speed | number:'1.1-1'}}</text>
+        <text x="44%" y="78%">{{ this.engine.next().speed | number:'1.1-1'}}</text>
       </svg>
     </ion-col>
   </ion-row>
@@ -50,7 +54,7 @@
         {{this.engine.sToMMSS(segment.time)}}
       </ion-label>
       <ion-label class="speed-text">
-        {{this.engine.stride.values[segment.pace] | number:'1.1-1'}}
+        {{segment.speed | number:'1.1-1'}}
       </ion-label>
       <ion-icon slot="end" name="{{paceName[segment.pace]}}"></ion-icon>
     </ion-item>
@@ -65,8 +69,8 @@
       <ion-icon name="{{paceName[this.engine.next().pace]}}"></ion-icon>
 
     </ion-title>
-    <ion-button size="large" slot="primary" expand="block" color="primary" (click)="this.engine.toggleTimer()">
-      <ion-icon slot="icon-only" 
+    <ion-button disabled #startButton size="large" slot="primary" expand="block" color="primary" (click)="this.engine.toggleTimer()">
+      <ion-icon slot="icon-only"
         name="{{this.engine.state === 'pause' || this.engine.state === 'end' || this.engine.state === 'stop'? 'play' : 'pause'}}">
       </ion-icon>
     </ion-button>

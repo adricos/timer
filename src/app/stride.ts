@@ -15,6 +15,7 @@ export class Stride {
         this.values[Pace.walkItOut] = walkItOut;
         this.values[Pace.coolDown] = coolDown;
     }
+
 }
 
 export let StrideType = {
