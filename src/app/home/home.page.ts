@@ -10,6 +10,8 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 import { WorkOut } from '../workout';
 
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
+
 declare var cordova;
 @Component({
   selector: 'app-home',
@@ -32,11 +34,18 @@ export class HomePage implements OnInit {
   constructor(
     public engine: WorkOutEngine,
     private http: HTTP,
-    private storage: Storage
+    private storage: Storage,
+    private nativeAudio: NativeAudio
   ) {
   }
 
   ngOnInit() {
+    this.nativeAudio.preloadSimple('1', 'assets/audio/1.mp3').catch((e)=>console.log(e));
+    this.nativeAudio.preloadSimple('2', 'assets/audio/2.mp3').catch((e)=>console.log(e));
+    this.nativeAudio.preloadSimple('3', 'assets/audio/3.mp3').catch((e)=>console.log(e));
+    this.nativeAudio.preloadSimple('4', 'assets/audio/4.mp3').catch((e)=>console.log(e));
+    this.nativeAudio.preloadSimple('5', 'assets/audio/5.mp3').catch((e)=>console.log(e));
+
     this.engine.segment$.subscribe((s: number) => this.scrollTo(s));
 
     this.storage.length().then((val) => {
@@ -97,14 +106,19 @@ export class HomePage implements OnInit {
   getWarningColor(value: number) {
     switch (value) {
       case 5:
+        this.nativeAudio.play('5');
         return '#FFFFF3';
       case 4:
+        this.nativeAudio.play('4');
         return '#FFFF9A';
       case 3:
+        this.nativeAudio.play('3');
         return '#FFFF58';
       case 2:
+        this.nativeAudio.play('2');
         return '#FFFF19';
       case 1:
+        this.nativeAudio.play('1');
         return '#FFFF00';
       default:
         return '#FFFFFF';

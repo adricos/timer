@@ -12,6 +12,7 @@ import { WorkOutEngine } from './workoutengine';
 
 import { HTTP } from '@ionic-native/http/ngx';
 import { IonicStorageModule } from '@ionic/storage';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { IonicStorageModule } from '@ionic/storage';
     StatusBar,
     WorkOutEngine,
     SplashScreen,
+    NativeAudio,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

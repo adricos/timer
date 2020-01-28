@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Treadmill Timer</name>
-    <description>Yet another treadmill app.</description>
-    <author email="info@adriancosta.com.ar" href="http://www.adriancosta.com.ar/">Adrian Costa</author>
+    <description>An awesome Ionic/Cordova app.</description>
+    <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -99,5 +99,5 @@
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="^4.0.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
-    <allow-navigation href="http://localhost:8100" sessionid="c81568b1" />
+    <allow-navigation href="http://localhost:8100" sessionid="8420ec40" />
 </widget>
