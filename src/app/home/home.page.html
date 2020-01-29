@@ -43,7 +43,6 @@
   <text x="44%" y="78%" class="timer-subtext">{{ this.engine.next().speed | number:'1.1-1'}}</text>
 </svg>
 <canvas #chart *ngIf="this.engine.state === 'stop' || this.engine.state === 'end'"></canvas>
-
 <ion-content>
   <ion-virtual-scroll #scroll [items]="this.engine.segments" scrollY="true">
     <ion-item *virtualItem="let segment;"

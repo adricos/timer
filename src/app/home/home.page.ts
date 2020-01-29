@@ -44,14 +44,15 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
+
+  }
+
+  ionViewDidEnter() {
     this.nativeAudio.preloadSimple('1', 'assets/audio/1.mp3').catch((e) => console.log(e));
     this.nativeAudio.preloadSimple('2', 'assets/audio/2.mp3').catch((e) => console.log(e));
     this.nativeAudio.preloadSimple('3', 'assets/audio/3.mp3').catch((e) => console.log(e));
     this.nativeAudio.preloadSimple('4', 'assets/audio/4.mp3').catch((e) => console.log(e));
-    this.nativeAudio.preloadSimple('5', 'assets/audio/5.mp3').catch((e) => console.log(e));
-  }
-
-  ionViewDidEnter() {
+    this.nativeAudio.preloadSimple('5', 'assets/audio/5.mp3').catch((e) => console.log(e));    
     this.storage.length().then((val) => {
       if (val === 0) {
         this.sync();
@@ -131,22 +132,27 @@ export class HomePage {
   }
 
   createBarChart(speeds: number[]) {
-    speeds.splice(0,1);
     let labels = [];
     for (let i = 0; i < speeds.length; i++) {
       labels.push('');
     }
+    labels.push('');
+    speeds.push(0);
     this.bars = new Chart(this.chart.nativeElement, {
       type: 'line',
       data: {
         labels: labels,
         datasets: [{
-          steppedLine: 'middle',
+          //steppedLine: 'middle',
+          borderJoinStyle: 'round',
+          borderCapStyle: 'round',
           data: speeds,
-          backgroundColor: 'rgb(38, 194, 129)',
+          backgroundColor: 'rgba(0, 0, 0, 0)',
           borderColor: 'rgb(38, 194, 129)',
-          borderWidth: 1,
-          pointRadius: 0
+          borderWidth: 3,
+          lineTension: 0.1,
+          pointBackgroundColor: 'rgba(0, 0, 0, 0)',
+          pointBorderColor: 'rgba(0, 0, 0, 0)',
         }]
       },
       options: {
@@ -166,6 +172,10 @@ export class HomePage {
         }
       }
     });
+
+    this.bars.canvas.style.width = '95vw';
+    this.bars.canvas.style.marginLeft = "auto";
+    this.bars.canvas.style.marginRight = "auto";
   }
 
 }

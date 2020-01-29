@@ -48,7 +48,7 @@ export class WorkoutEngine {
         workout: Workout,
         stride: Stride
     ) {
-        this.segments = workout.segments;
+        this.segments = workout.segments.slice(0);
         this.segments.splice(0, 0, { pace: Pace.start, time: 3});
         this.name = workout.name;
         this.stride = stride;
