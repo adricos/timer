@@ -1,5 +1,5 @@
 import { Segment } from './segment';
-export class WorkOut {
+export class Workout {
     public name: string;
     public segments: Segment[];
 }

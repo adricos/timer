@@ -1,53 +1,57 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { WorkOutEngine } from '../workoutengine';
+import { Component, ViewChild } from '@angular/core';
+import { IonContent, IonSelect, IonVirtualScroll, IonButton } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
+
+import { HTTP } from '@ionic-native/http/ngx';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
+
+import { WorkoutEngine } from '../workoutengine';
 import { StrideType } from '../stride';
 import { PaceName } from '../pace';
 import { GitFile } from '../git-file';
+import { Workout } from '../workout';
 
-import { IonContent, IonSelect, IonVirtualScroll, IonButton } from '@ionic/angular';
-import { HTTP } from '@ionic-native/http/ngx';
+import { Chart } from 'chart.js';
 
-import { Storage } from '@ionic/storage';
-import { WorkOut } from '../workout';
-
-import { NativeAudio } from '@ionic-native/native-audio/ngx';
-
-declare var cordova;
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage {
   @ViewChild(IonContent, { static: false }) content: IonContent;
   @ViewChild("workouts", { static: false }) workouts: IonSelect;
   @ViewChild("scroll", { static: false }) scroll: IonVirtualScroll;
   @ViewChild("syncButton", { static: false }) syncButton: IonButton;
   @ViewChild("startButton", { static: false }) startButton: IonButton;
+  @ViewChild('chart', { static: false }) chart: Chart;
 
+  bars: any;
+  colorArray: any;
 
   paceName = PaceName;
   repo = 'https://api.github.com/repos/adricos/workouts/contents/files';
-  workoutsArray: WorkOut[] = [];
+  workoutsArray: Workout[] = [];
   isSyncing: boolean;
 
   constructor(
-    public engine: WorkOutEngine,
+    public engine: WorkoutEngine,
     private http: HTTP,
     private storage: Storage,
     private nativeAudio: NativeAudio
   ) {
+    this.engine.segment$.subscribe((s: number) => this.scrollTo(s));
   }
 
-  ngOnInit() {
-    this.nativeAudio.preloadSimple('1', 'assets/audio/1.mp3').catch((e)=>console.log(e));
-    this.nativeAudio.preloadSimple('2', 'assets/audio/2.mp3').catch((e)=>console.log(e));
-    this.nativeAudio.preloadSimple('3', 'assets/audio/3.mp3').catch((e)=>console.log(e));
-    this.nativeAudio.preloadSimple('4', 'assets/audio/4.mp3').catch((e)=>console.log(e));
-    this.nativeAudio.preloadSimple('5', 'assets/audio/5.mp3').catch((e)=>console.log(e));
+  ionViewDidLoad() {
+    this.nativeAudio.preloadSimple('1', 'assets/audio/1.mp3').catch((e) => console.log(e));
+    this.nativeAudio.preloadSimple('2', 'assets/audio/2.mp3').catch((e) => console.log(e));
+    this.nativeAudio.preloadSimple('3', 'assets/audio/3.mp3').catch((e) => console.log(e));
+    this.nativeAudio.preloadSimple('4', 'assets/audio/4.mp3').catch((e) => console.log(e));
+    this.nativeAudio.preloadSimple('5', 'assets/audio/5.mp3').catch((e) => console.log(e));
+  }
 
-    this.engine.segment$.subscribe((s: number) => this.scrollTo(s));
-
+  ionViewDidEnter() {
     this.storage.length().then((val) => {
       if (val === 0) {
         this.sync();
@@ -57,15 +61,10 @@ export class HomePage implements OnInit {
         });
       }
     })
-
-
   }
 
   scrollTo(item: number): void {
-    this.scroll.positionForItem(item).then(n => {
-      this.content.scrollToPoint(0, n, 750)
-    });
-    ;
+    this.scroll.positionForItem(item).then(n => this.content.scrollToPoint(0, n, 750));
   }
 
   sync() {
@@ -87,7 +86,7 @@ export class HomePage implements OnInit {
         Promise.all(arr)
           .then(results => {
             results.forEach(r => {
-              let workout = JSON.parse(r.data) as WorkOut;
+              let workout = JSON.parse(r.data) as Workout;
               this.workoutsArray.push(workout);
             });
             if (this.workoutsArray.length > 0) {
@@ -128,6 +127,45 @@ export class HomePage implements OnInit {
   loadWorkout($event) {
     this.startButton.disabled = false;
     this.engine.init(this.workoutsArray[$event.detail.value], StrideType.Jog);
+    this.createBarChart(this.engine.segmentsGraph);
+  }
+
+  createBarChart(speeds: number[]) {
+    speeds.splice(0,1);
+    let labels = [];
+    for (let i = 0; i < speeds.length; i++) {
+      labels.push('');
+    }
+    this.bars = new Chart(this.chart.nativeElement, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          steppedLine: 'middle',
+          data: speeds,
+          backgroundColor: 'rgb(38, 194, 129)',
+          borderColor: 'rgb(38, 194, 129)',
+          borderWidth: 1,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            display: false
+          }],
+          yAxes: [{
+            display: false,
+            ticks: {
+              suggestedMin: 0
+            }
+          }]
+        }
+      }
+    });
   }
 
 }

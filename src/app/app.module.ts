@@ -8,7 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { WorkOutEngine } from './workoutengine';
+import { WorkoutEngine } from './workoutengine';
 
 import { HTTP } from '@ionic-native/http/ngx';
 import { IonicStorageModule } from '@ionic/storage';
@@ -21,7 +21,7 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
   providers: [
     HTTP,
     StatusBar,
-    WorkOutEngine,
+    WorkoutEngine,
     SplashScreen,
     NativeAudio,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

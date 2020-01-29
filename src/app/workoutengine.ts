@@ -1,18 +1,18 @@
-import { WorkOut } from './workout';
+import { Workout } from './workout';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Segment } from './segment';
 import { Stride } from './stride';
 import { Injectable } from '@angular/core';
 import { Pace } from './pace';
 
-const circleR = 80;
+const circleR = 40;
 const circleDasharray = 2 * Math.PI * circleR;
 
-const segmentCircleR = 68;
+const segmentCircleR = 34;
 const segmentCircleDasharray = 2 * Math.PI * segmentCircleR;
 
 @Injectable()
-export class WorkOutEngine {
+export class WorkoutEngine {
     time: BehaviorSubject<string> = new BehaviorSubject('00:00');
     percentage: BehaviorSubject<number> = new BehaviorSubject(0);
     segmentTime: BehaviorSubject<string> = new BehaviorSubject('00:00');
@@ -22,6 +22,7 @@ export class WorkOutEngine {
     segment$ = this.segment.asObservable();
 
     segments: Segment[];
+    segmentsGraph: number[];
     stride: Stride;
 
     name: string;
@@ -44,11 +45,12 @@ export class WorkOutEngine {
     }
 
     public init(
-        workOut: WorkOut,
+        workout: Workout,
         stride: Stride
     ) {
-        this.segments = workOut.segments;
-        this.name = workOut.name;
+        this.segments = workout.segments;
+        this.segments.splice(0, 0, { pace: Pace.start, time: 3});
+        this.name = workout.name;
         this.stride = stride;
         this.duration = this.updateSegmentInteval();
         this.stopTimer();
@@ -63,14 +65,19 @@ export class WorkOutEngine {
     
     private updateSegmentInteval(): number {
         let elapsedTime = 0;
-
+        let minutes = 0;
+        this.segmentsGraph = [];
         this.segments.forEach(s => {
             s.startTime = elapsedTime + 1;
             elapsedTime += s.time;
             s.endTime = elapsedTime;
             s.speed = this.getSpeed(s.pace);
+            let speedTime = Math.round((s.endTime - s.startTime) / 30) + 1;
+            for (let step = 0; step < speedTime; step++) {
+                this.segmentsGraph.push(s.speed);
+            }
         });
-
+        
         return elapsedTime;
     }
 

@@ -4,7 +4,8 @@ export enum Pace {
     pickItUp,
     toTheMax,
     walkItOut,
-    coolDown
+    coolDown,
+    start
 }
 
 export let PaceName: string[] = [
@@ -13,5 +14,6 @@ export let PaceName: string[] = [
     'trending-up',
     'jet',
     'trending-down',
-    'snow'
+    'snow',
+    'flag'
 ];
