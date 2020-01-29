@@ -131,6 +131,11 @@ export class HomePage {
     this.createBarChart(this.engine.segmentsGraph);
   }
 
+  stopTimer(){
+    this.engine.stopTimer();
+    this.createBarChart(this.engine.segmentsGraph);
+  }
+
   createBarChart(speeds: number[]) {
     let labels = [];
     for (let i = 0; i < speeds.length; i++) {
@@ -174,6 +179,7 @@ export class HomePage {
     });
 
     this.bars.canvas.style.width = '95vw';
+    this.bars.canvas.style.height = '40vh';
     this.bars.canvas.style.marginLeft = "auto";
     this.bars.canvas.style.marginRight = "auto";
   }
