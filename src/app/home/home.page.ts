@@ -33,6 +33,7 @@ export class HomePage {
   repo = 'https://api.github.com/repos/adricos/workouts/contents/files';
   workoutsArray: Workout[] = [];
   isSyncing: boolean;
+  playFinished: boolean;
 
   constructor(
     public engine: WorkoutEngine,
@@ -41,6 +42,11 @@ export class HomePage {
     private nativeAudio: NativeAudio
   ) {
     this.engine.segment$.subscribe((s: number) => this.scrollTo(s));
+    this.engine.segmentElapsedTime.subscribe((s: number) => {
+      if (s <= 5) {
+        this.nativeAudio.play(s.toString());
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -52,7 +58,7 @@ export class HomePage {
     this.nativeAudio.preloadSimple('2', 'assets/audio/2.mp3').catch((e) => console.log(e));
     this.nativeAudio.preloadSimple('3', 'assets/audio/3.mp3').catch((e) => console.log(e));
     this.nativeAudio.preloadSimple('4', 'assets/audio/4.mp3').catch((e) => console.log(e));
-    this.nativeAudio.preloadSimple('5', 'assets/audio/5.mp3').catch((e) => console.log(e));    
+    this.nativeAudio.preloadSimple('5', 'assets/audio/5.mp3').catch((e) => console.log(e));
     this.storage.length().then((val) => {
       if (val === 0) {
         this.sync();
@@ -91,10 +97,10 @@ export class HomePage {
               this.workoutsArray.push(workout);
             });
             if (this.workoutsArray.length > 0) {
-              
-              return this.storage.set("workouts", this.workoutsArray.sort(function(a, b) {
+
+              return this.storage.set("workouts", this.workoutsArray.sort(function (a, b) {
                 var nameA = a.name.toUpperCase();
-                var nameB = b.name.toUpperCase(); 
+                var nameB = b.name.toUpperCase();
                 if (nameA < nameB) {
                   return -1;
                 }
@@ -117,32 +123,35 @@ export class HomePage {
   getWarningColor(value: number) {
     switch (value) {
       case 5:
-        this.nativeAudio.play('5');
         return '#FFFFF3';
       case 4:
-        this.nativeAudio.play('4');
         return '#FFFF9A';
       case 3:
-        this.nativeAudio.play('3');
         return '#FFFF58';
       case 2:
-        this.nativeAudio.play('2');
         return '#FFFF19';
       case 1:
-        this.nativeAudio.play('1');
         return '#FFFF00';
       default:
         return '#FFFFFF';
     }
   }
 
+  play(value: number) {
+    if (this.playFinished === true) {
+      this.playFinished = false;
+      this.nativeAudio.play(value.toString()).finally(() => this.playFinished = true);
+    }
+  }
+
   loadWorkout($event) {
     this.startButton.disabled = false;
+    this.playFinished = true;
     this.engine.init(this.workoutsArray[$event.detail.value], StrideType.Jog);
     this.createBarChart(this.engine.segmentsGraph);
   }
 
-  stopTimer(){
+  stopTimer() {
     this.engine.stopTimer();
     this.createBarChart(this.engine.segmentsGraph);
   }
@@ -180,7 +189,7 @@ export class HomePage {
           }],
           yAxes: [{
             display: true,
-            gridLines:{
+            gridLines: {
               drawBorder: false
             },
             ticks: {
