@@ -91,7 +91,18 @@ export class HomePage {
               this.workoutsArray.push(workout);
             });
             if (this.workoutsArray.length > 0) {
-              return this.storage.set("workouts", this.workoutsArray);
+              
+              return this.storage.set("workouts", this.workoutsArray.sort(function(a, b) {
+                var nameA = a.name.toUpperCase();
+                var nameB = b.name.toUpperCase(); 
+                if (nameA < nameB) {
+                  return -1;
+                }
+                if (nameA > nameB) {
+                  return 1;
+                }
+                return 0;
+              }));
             }
           })
           .finally(() => {
