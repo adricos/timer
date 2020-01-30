@@ -44,8 +44,7 @@
 </svg>
 <canvas #chart [hidden]="this.engine.segments.length <= 0 || ['start','pause'].includes(this.engine.state)"></canvas>
 <ion-item [hidden]="this.engine.segments.length <= 0 || ['start','pause'].includes(this.engine.state)">
-  <ion-label slot="start">{{this.engine.segments.length - 1}} segments</ion-label>
-  <ion-label slot="end" class="ion-text-end"><ion-icon name="stopwatch"></ion-icon> {{this.engine.sToMMSS(this.engine.duration - 3)}}</ion-label>
+  <ion-label><ion-icon name="stats"></ion-icon> {{this.engine.segments.length - 1}} - <ion-icon name="stopwatch"></ion-icon> {{this.engine.sToMMSS(this.engine.duration - 3)}}</ion-label>
 </ion-item>
 <ion-content>
   <ion-virtual-scroll #scroll [items]="this.engine.segments" scrollY="true">
