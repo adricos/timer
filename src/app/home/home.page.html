@@ -42,7 +42,11 @@
   <text x="50%" y="68%" class="timer-text">{{ this.engine.current().speed | number:'1.1-1'}}</text>
   <text x="44%" y="78%" class="timer-subtext">{{ this.engine.next().speed | number:'1.1-1'}}</text>
 </svg>
-<canvas #chart [hidden]="['start','pause'].includes(this.engine.state)"></canvas>
+<canvas #chart [hidden]="this.engine.segments.length <= 0 || ['start','pause'].includes(this.engine.state)"></canvas>
+<ion-item [hidden]="this.engine.segments.length <= 0 || ['start','pause'].includes(this.engine.state)">
+  <ion-label slot="start">{{this.engine.segments.length - 1}} segments</ion-label>
+  <ion-label slot="end" class="ion-text-end"><ion-icon name="stopwatch"></ion-icon> {{this.engine.sToMMSS(this.engine.duration - 3)}}</ion-label>
+</ion-item>
 <ion-content>
   <ion-virtual-scroll #scroll [items]="this.engine.segments" scrollY="true">
     <ion-item *virtualItem="let segment;"

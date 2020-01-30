@@ -21,14 +21,14 @@ export class WorkoutEngine {
     segment: Subject<number> = new Subject<number>();
     segment$ = this.segment.asObservable();
 
-    segments: Segment[];
+    segments: Segment[] = [];
     segmentsGraph: number[];
     stride: Stride;
 
     name: string;
     currentSegment: number;
 
-    public duration: number;
+    public duration: number = 0;
 
     private timer: number;
     interval;
@@ -137,6 +137,9 @@ export class WorkoutEngine {
     }
 
     sToMMSS(s: number, delim = ':') {
+        if (s < 0) {
+            s = 0;
+        }
         const showWith0 = (value: number) => value < 10 ? `0${value}` : value;
         const minutes = showWith0(Math.floor(s / 60));
         const seconds = showWith0(Math.floor((s % 60)));

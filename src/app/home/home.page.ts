@@ -148,19 +148,18 @@ export class HomePage {
       data: {
         labels: labels,
         datasets: [{
-          //steppedLine: 'middle',
-          borderJoinStyle: 'round',
-          borderCapStyle: 'round',
           data: speeds,
           backgroundColor: 'rgba(0, 0, 0, 0)',
           borderColor: 'rgb(38, 194, 129)',
           borderWidth: 3,
-          lineTension: 0.1,
           pointBackgroundColor: 'rgba(0, 0, 0, 0)',
           pointBorderColor: 'rgba(0, 0, 0, 0)',
         }]
       },
       options: {
+        tooltips: {
+          enabled: false
+        },
         legend: {
           display: false
         },
@@ -169,8 +168,12 @@ export class HomePage {
             display: false
           }],
           yAxes: [{
-            display: false,
+            display: true,
+            gridLines:{
+              drawBorder: false
+            },
             ticks: {
+              display: false,
               suggestedMin: 0
             }
           }]
@@ -179,7 +182,7 @@ export class HomePage {
     });
 
     this.bars.canvas.style.width = '95vw';
-    this.bars.canvas.style.height = '40vh';
+    this.bars.canvas.style.height = '32vw';
     this.bars.canvas.style.marginLeft = "auto";
     this.bars.canvas.style.marginRight = "auto";
   }
