@@ -15,18 +15,13 @@
     fill: var(--ion-background-color);
 }
 
-.speed-text {
-    text-anchor: middle;
-    font-weight: 600;
-    font-size: 12px;
-}
-
 .segment {
-    border-radius: 6px !important;
-    margin-top: 3px;
-    margin-bottom: 3px;
+    border-radius: 15px !important;
+    margin-top: 6px;
+    margin-bottom: 6px;
     box-shadow: none !important;
 }
+
 .elapsed-5 {
     fill: #ffc185;
 }
