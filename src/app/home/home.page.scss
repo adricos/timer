@@ -3,15 +3,50 @@
     font-size: 18px;
     text-anchor: middle;
     font-weight: 600;
+    fill: var(--ion-text-color);
 }
 
 .timer-subtext {
     font-size: 9px;
+    fill: var(--ion-text-color);
 }
 
+.timer {
+    fill: var(--ion-background-color);
+}
 
 .speed-text {
     text-anchor: middle;
     font-weight: 600;
-    fill: #333;
+    font-size: 12px;
+}
+
+.segment {
+    border-radius: 6px !important;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    box-shadow: none !important;
+}
+.elapsed-5 {
+    fill: #ffc185;
+}
+
+.elapsed-4 {
+    fill: #ffaa71;
+}
+
+.elapsed-3 {
+    fill: #ff875a;
+}
+
+.elapsed-2 {
+    fill: #fb6944;
+}
+
+.elapsed-1 {
+    fill: #ff4545;
+}
+
+.elapsed-any {
+    fill: rgba(0,0,0,0);
 }

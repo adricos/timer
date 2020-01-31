@@ -34,6 +34,7 @@ export class HomePage {
   workoutsArray: Workout[] = [];
   isSyncing: boolean;
   playFinished: boolean;
+  circleColor: string;
 
   constructor(
     public engine: WorkoutEngine,
@@ -43,7 +44,8 @@ export class HomePage {
   ) {
     this.engine.segment$.subscribe((s: number) => this.scrollTo(s));
     this.engine.segmentElapsedTime.subscribe((s: number) => {
-      if (s <= 5) {
+      this.circleColor = this.getCircleClass(s);
+      if (s < 6 && s > 0) {
         this.nativeAudio.play(s.toString());
       }
     });
@@ -68,6 +70,14 @@ export class HomePage {
         });
       }
     })
+  }
+
+  toggleDarkMode() {
+    document.body.classList.toggle('dark');
+  }
+
+  isDarkMode() {
+    return document.body.classList.contains('dark');
   }
 
   scrollTo(item: number): void {
@@ -120,21 +130,11 @@ export class HomePage {
       });
   }
 
-  getWarningColor(value: number) {
-    switch (value) {
-      case 5:
-        return '#FFFFF3';
-      case 4:
-        return '#FFFF9A';
-      case 3:
-        return '#FFFF58';
-      case 2:
-        return '#FFFF19';
-      case 1:
-        return '#FFFF00';
-      default:
-        return '#FFFFFF';
+  getCircleClass(value: number) {
+    if (value < 6 && value > 0 ) {
+      return 'elapsed-' + value.toString();
     }
+    return 'elapsed-any'; 
   }
 
   play(value: number) {

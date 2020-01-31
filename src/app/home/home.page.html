@@ -12,16 +12,21 @@
       <ion-icon *ngIf="!isSyncing" slot="icon-only" name="sync">
       </ion-icon>
     </ion-button>
+    <ion-button slot="primary" (click)="this.toggleDarkMode()">
+      <ion-icon slot="icon-only" [name]="this.isDarkMode() ? 'sunny' : 'moon'">
+      </ion-icon>
+    </ion-button>    
   </ion-toolbar>
 </ion-header>
 
-<svg *ngIf="['start','pause'].includes(this.engine.state)" id="progress-circle" width="100vw" height="40vh" viewBox="0 0 100 100">
+<svg *ngIf="['start','pause'].includes(this.engine.state)" id="progress-circle" width="100vw" height="40vh"
+  viewBox="0 0 100 100">
   <linearGradient id="linearColors1" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0%" stop-color="#ddd6f3"></stop>
     <stop offset="100%" stop-color="#faaca8"></stop>
   </linearGradient>
-  <circle cx="50%" cy="50%" stroke="#f3f3f3" stroke-width="6" [attr.r]="this.engine.circleR"
-    [attr.fill]="this.getWarningColor(this.engine.segmentElapsedTime | async)" />
+  <circle cx="50%" cy="50%" stroke="#777777" stroke-width="12" [attr.r]="(this.engine.circleR + this.engine.segmentCircleR) / 2"
+  [ngClass]="this.circleColor" />
   <circle cx="50%" cy="50%" stroke="url(#linearColors1)" stroke-width="6" [attr.r]="this.engine.circleR" fill="none"
     stroke-linecap="round" [attr.stroke-dasharray]="this.engine.circleDasharray"
     [attr.stroke-dashoffset]="this.engine.percentageOffset(this.engine.percentage | async, this.engine.circleDasharray)"
@@ -31,7 +36,7 @@
     <stop offset="0%" stop-color="#f3ddd6"></stop>
     <stop offset="100%" stop-color="#a8faac"></stop>
   </linearGradient>
-  <circle cx="50%" cy="50%" stroke="#f3f3f3" stroke-width="6" [attr.r]="this.engine.segmentCircleR" fill="none" />
+
   <circle cx="50%" cy="50%" stroke="url(#linearColors2)" stroke-width="6" [attr.r]="this.engine.segmentCircleR"
     fill="none" transform-origin="50% 50%" transform='rotate(-90)' stroke-linecap="round"
     [attr.stroke-dasharray]="this.engine.segmentCircleDasharray"
@@ -44,17 +49,20 @@
 </svg>
 <canvas #chart [hidden]="this.engine.segments.length <= 0 || ['start','pause'].includes(this.engine.state)"></canvas>
 <ion-item [hidden]="this.engine.segments.length <= 0 || ['start','pause'].includes(this.engine.state)">
-  <ion-label><ion-icon name="stats"></ion-icon> {{this.engine.segments.length - 1}} - <ion-icon name="stopwatch"></ion-icon> {{this.engine.sToMMSS(this.engine.duration - 3)}}</ion-label>
+  <ion-label>
+    <ion-icon name="stats"></ion-icon> {{this.engine.segments.length - 1}} - <ion-icon name="stopwatch"></ion-icon>
+    {{this.engine.sToMMSS(this.engine.duration - 3)}}
+  </ion-label>
 </ion-item>
 <ion-content>
   <ion-virtual-scroll #scroll [items]="this.engine.segments" scrollY="true">
     <ion-item *virtualItem="let segment;"
-      color="{{segment.completed === true ? 'success' : (segment.completed === false ? 'primary' : '')}}">
+      color="{{segment.completed === true ? 'success' : (segment.completed === false ? 'primary' : '')}}" class="segment">
       <ion-label>
         {{this.engine.sToMMSS(segment.time)}}
       </ion-label>
-      <ion-label class="speed-text">
-        {{segment.speed | number:'1.1-1'}}
+      <ion-label>
+        <h1>{{segment.speed | number:'1.1-1'}} mph</h1>
       </ion-label>
       <ion-icon slot="end" name="{{paceName[segment.pace]}}"></ion-icon>
     </ion-item>
