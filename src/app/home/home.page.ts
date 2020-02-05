@@ -28,6 +28,7 @@ export class HomePage {
 
   bars: any;
   colorArray: any;
+  time: any;
 
   paceName = PaceName;
   repo = 'https://api.github.com/repos/adricos/workouts/contents/files';
@@ -52,10 +53,11 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-
+    
   }
 
   ionViewDidEnter() {
+    setInterval(() => this.updateTime(), 1000);
     this.nativeAudio.preloadSimple('1', 'assets/audio/1.mp3').catch((e) => console.log(e));
     this.nativeAudio.preloadSimple('2', 'assets/audio/2.mp3').catch((e) => console.log(e));
     this.nativeAudio.preloadSimple('3', 'assets/audio/3.mp3').catch((e) => console.log(e));
@@ -70,6 +72,18 @@ export class HomePage {
         });
       }
     })
+  }
+
+  updateTime() {
+    let currentTime = Date.now()
+    let GMT = -(new Date()).getTimezoneOffset()/60;
+    let totalSeconds = Math.floor(currentTime/1000);
+    //let seconds = ('0' + totalSeconds % 60).slice(-2);
+    let totalMinutes = Math.floor(totalSeconds/60);
+    let minutes = ('0' + totalMinutes % 60).slice(-2);
+    let totalHours = Math.floor(totalMinutes/60);
+    let hours = ('0' + (totalHours+GMT) % 24).slice(-2);
+    this.time = hours + ":" + minutes; // + ":" + seconds;
   }
 
   toggleDarkMode() {

@@ -1,3 +1,11 @@
+.timer-circle-general {
+    stroke:  var(--ion-color-success);
+}
+
+.timer-circle-segment {
+    stroke:  var(--ion-color-primary);
+}
+
 
 .timer-text {
     font-size: 18px;
@@ -16,7 +24,7 @@
 }
 
 .segment {
-    border-radius: 15px !important;
+    border-radius: 10px !important;
     margin-top: 6px;
     margin-bottom: 6px;
     box-shadow: none !important;
@@ -24,24 +32,30 @@
 
 .elapsed-5 {
     fill: #ffc185;
+    stroke: var(--ion-color-step-150);
 }
 
 .elapsed-4 {
     fill: #ffaa71;
+    stroke: var(--ion-color-step-150);
 }
 
 .elapsed-3 {
     fill: #ff875a;
+    stroke: var(--ion-color-step-150);
 }
 
 .elapsed-2 {
     fill: #fb6944;
+    stroke: var(--ion-color-step-150);
 }
 
 .elapsed-1 {
     fill: #ff4545;
+    stroke: var(--ion-color-step-150);
 }
 
 .elapsed-any {
     fill: rgba(0,0,0,0);
+    stroke: var(--ion-color-step-150);
 }

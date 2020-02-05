@@ -19,15 +19,15 @@
   </ion-toolbar>
 </ion-header>
 
-<svg *ngIf="['start','pause'].includes(this.engine.state)" id="progress-circle" width="100vw" height="40vh"
+<svg *ngIf="['start','pause'].includes(this.engine.state)" id="progress-circle" width="100vw" height="64vh"
   viewBox="0 0 100 100">
   <linearGradient id="linearColors1" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0%" stop-color="#ddd6f3"></stop>
     <stop offset="100%" stop-color="#faaca8"></stop>
   </linearGradient>
-  <circle cx="50%" cy="50%" stroke="#777777" stroke-width="12" [attr.r]="(this.engine.circleR + this.engine.segmentCircleR) / 2"
+  <circle cx="50%" cy="50%" stroke-width="12" [attr.r]="(this.engine.circleR + this.engine.segmentCircleR) / 2"
   [ngClass]="this.circleColor" />
-  <circle cx="50%" cy="50%" stroke="url(#linearColors1)" stroke-width="6" [attr.r]="this.engine.circleR" fill="none"
+  <circle cx="50%" cy="50%" class="timer-circle-general" stroke-width="6" [attr.r]="this.engine.circleR" fill="none"
     stroke-linecap="round" [attr.stroke-dasharray]="this.engine.circleDasharray"
     [attr.stroke-dashoffset]="this.engine.percentageOffset(this.engine.percentage | async, this.engine.circleDasharray)"
     transform-origin="50% 50%" transform='rotate(-90)' />
@@ -37,15 +37,19 @@
     <stop offset="100%" stop-color="#a8faac"></stop>
   </linearGradient>
 
-  <circle cx="50%" cy="50%" stroke="url(#linearColors2)" stroke-width="6" [attr.r]="this.engine.segmentCircleR"
+  <circle cx="50%" cy="50%" class="timer-circle-segment" stroke-width="6" [attr.r]="this.engine.segmentCircleR"
     fill="none" transform-origin="50% 50%" transform='rotate(-90)' stroke-linecap="round"
     [attr.stroke-dasharray]="this.engine.segmentCircleDasharray"
     [attr.stroke-dashoffset]="this.engine.percentageOffset(this.engine.segmentPercentage | async, this.engine.segmentCircleDasharray)" />
+
+  <text x="3%" y="9%" class="timer-subtext">{{ this.engine.currentSegment }} / {{this.engine.segments.length - 1}}</text>
+  <text x="77%" y="9%" class="timer-subtext">{{this.engine.sToMMSS(this.engine.duration - 3)}}</text>
 
   <text x="40%" y="30%" class="timer-subtext">{{ this.engine.time | async}}</text>
   <text x="50%" y="50%" class="timer-text">{{ this.engine.segmentTime | async  }}</text>
   <text x="50%" y="68%" class="timer-text">{{ this.engine.current().speed | number:'1.1-1'}}</text>
   <text x="44%" y="78%" class="timer-subtext">{{ this.engine.next().speed | number:'1.1-1'}}</text>
+  <text x="77%" y="98%" class="timer-subtext">{{ this.time }}</text>
 </svg>
 <canvas #chart [hidden]="this.engine.segments.length <= 0 || ['start','pause'].includes(this.engine.state)"></canvas>
 <ion-item [hidden]="this.engine.segments.length <= 0 || ['start','pause'].includes(this.engine.state)">
