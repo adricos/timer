@@ -64,9 +64,10 @@ variables:
     CompanyMileage_KH_User: TestCategory=CompanyMileage_KH_User|
   ${{ if eq( parameters.Playmaker_KH, true ) }}:
     Playmaker_KH: TestCategory=Playmaker_KH|
+  testCategories: ${{ variables.PDGM_ICD10_Validation }}${{ variables.HH_ReportAdmin }}${{ variables.CompanyMileage_HH_EntityAddress }}${{ variables.CompanyMileage_HH_Trip }}${{ variables.CompanyMileage_HH_User }}${{ variables.CompanyMileage_HHH }}${{ variables.CompanyMileage_KH_EntityAddress }}${{ variables.CompanyMileage_KH_Trip }}${{ variables.CompanyMileage_KH_User }}${{ variables.Playmaker_KH }}
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo ${{ variables.PDGM_ICD10_Validation }}${{ variables.HH_ReportAdmin }}${{ variables.CompanyMileage_HH_EntityAddress }}${{ variables.CompanyMileage_HH_Trip }}${{ variables.CompanyMileage_HH_User }}${{ variables.CompanyMileage_HHH }}${{ variables.CompanyMileage_KH_EntityAddress }}${{ variables.CompanyMileage_KH_Trip }}${{ variables.CompanyMileage_KH_User }}${{ variables.Playmaker_KH }}
+- script: echo "${{ variables.testCategories }}"
