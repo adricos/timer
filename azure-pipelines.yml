@@ -66,9 +66,11 @@ variables:
     Playmaker_KH: TestCategory=Playmaker_KH|
   testCategories: ${{ variables.PDGM_ICD10_Validation }}${{ variables.HH_ReportAdmin }}${{ variables.CompanyMileage_HH_EntityAddress }}${{ variables.CompanyMileage_HH_Trip }}${{ variables.CompanyMileage_HH_User }}${{ variables.CompanyMileage_HHH }}${{ variables.CompanyMileage_KH_EntityAddress }}${{ variables.CompanyMileage_KH_Trip }}${{ variables.CompanyMileage_KH_User }}${{ variables.Playmaker_KH }}TestCategory=_Placeholder_
     
-
 pool:
   vmImage: 'ubuntu-latest'
+  jobs:  
+    - job: RunQATestIntegration
 
-steps:
-- script: echo  ${{ variables.testCategories }}
+  condition: eq(parameters.qaTest, true)
+  steps:
+    - script: echo  ${{ variables.testCategories }}
