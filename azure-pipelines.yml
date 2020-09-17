@@ -44,30 +44,31 @@ parameters:
     default: false 
 
 variables:
-  testCategory:
   ${{ if eq( parameters.PDGM_ICD10_Validation, true ) }}:
-    - TestCategory=PDGM_ICD10_Validation
+    PDGM_ICD10_Validation: TestCategory=PDGM_ICD10_Validation|
   ${{ if eq( parameters.HH_ReportAdmin, true ) }}:
-    - TestCategory=HH_ReportAdmin
+    HH_ReportAdmin: TestCategory=HH_ReportAdmin|
   ${{ if eq( parameters.CompanyMileage_HH_EntityAddress, true ) }}:
-    - TestCategory=CompanyMileage_HH_EntityAddress
+    CompanyMileage_HH_EntityAddress: TestCategory=CompanyMileage_HH_EntityAddress|
   ${{ if eq( parameters.CompanyMileage_HH_Trip, true ) }}:
-    - TestCategory=CompanyMileage_HH_Trip
+    CompanyMileage_HH_Trip: TestCategory=CompanyMileage_HH_Trip|
   ${{ if eq( parameters.CompanyMileage_HH_User, true ) }}:
-    - TestCategory=CompanyMileage_HH_User
+    CompanyMileage_HH_User: TestCategory=CompanyMileage_HH_User|
   ${{ if eq( parameters.CompanyMileage_HHH, true ) }}:
-    - TestCategory=CompanyMileage_HHH
+    CompanyMileage_HHH: TestCategory=CompanyMileage_HHH|
   ${{ if eq( parameters.CompanyMileage_KH_EntityAddress, true ) }}:
-    - TestCategory=CompanyMileage_KH_EntityAddress
+    CompanyMileage_KH_EntityAddress: TestCategory=CompanyMileage_KH_EntityAddress|
   ${{ if eq( parameters.CompanyMileage_KH_Trip, true ) }}:
-    - TestCategory=CompanyMileage_KH_Trip
+    CompanyMileage_KH_Trip: TestCategory=CompanyMileage_KH_Trip|
   ${{ if eq( parameters.CompanyMileage_KH_User, true ) }}:
-    - TestCategory=CompanyMileage_KH_User
+    CompanyMileage_KH_User: TestCategory=CompanyMileage_KH_User|
   ${{ if eq( parameters.Playmaker_KH, true ) }}:
-    - TestCategory=Playmaker_KH
+    Playmaker_KH: TestCategory=Playmaker_KH|
+  testCategories: ${{ variables.PDGM_ICD10_Validation }}${{ variables.HH_ReportAdmin }}${{ variables.CompanyMileage_HH_EntityAddress }}${{ variables.CompanyMileage_HH_Trip }}${{ variables.CompanyMileage_HH_User }}${{ variables.CompanyMileage_HHH }}${{ variables.CompanyMileage_KH_EntityAddress }}${{ variables.CompanyMileage_KH_Trip }}${{ variables.CompanyMileage_KH_User }}${{ variables.Playmaker_KH }}TestCategory=_Placeholder_
+    
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo  ${{ variables.testCategory }}
+- script: echo  ${{ variables.testCategories }}
