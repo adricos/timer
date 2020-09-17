@@ -44,31 +44,30 @@ parameters:
     default: false 
 
 variables:
+  testCategory:
   ${{ if eq( parameters.PDGM_ICD10_Validation, true ) }}:
-    testCategory: format('{0}|{1}', ${{ variables.testCategories }}, 'TestCategory=PDGM_ICD10_Validation') 
+    - TestCategory=PDGM_ICD10_Validation
   ${{ if eq( parameters.HH_ReportAdmin, true ) }}:
-    testCategory: format('{0}|{1}', ${{ variables.testCategories }}, 'TestCategory=HH_ReportAdmin') 
+    - TestCategory=HH_ReportAdmin
   ${{ if eq( parameters.CompanyMileage_HH_EntityAddress, true ) }}:
-    testCategory: format('{0}|{1}', ${{ variables.testCategories }}, 'TestCategory=CompanyMileage_HH_EntityAddress') 
+    - TestCategory=CompanyMileage_HH_EntityAddress
   ${{ if eq( parameters.CompanyMileage_HH_Trip, true ) }}:
-    testCategory: format('{0}|{1}', ${{ variables.testCategories }}, 'TestCategory=CompanyMileage_HH_Trip') 
+    - TestCategory=CompanyMileage_HH_Trip
   ${{ if eq( parameters.CompanyMileage_HH_User, true ) }}:
-    testCategory: format('{0}|{1}', ${{ variables.testCategories }}, 'TestCategory=CompanyMileage_HH_User') 
+    - TestCategory=CompanyMileage_HH_User
   ${{ if eq( parameters.CompanyMileage_HHH, true ) }}:
-    testCategory: format('{0}|{1}', ${{ variables.testCategories }}, 'TestCategory=CompanyMileage_HHH') 
+    - TestCategory=CompanyMileage_HHH
   ${{ if eq( parameters.CompanyMileage_KH_EntityAddress, true ) }}:
-    testCategory: format('{0}|{1}', ${{ variables.testCategories }}, 'TestCategory=CompanyMileage_KH_EntityAddress') 
+    - TestCategory=CompanyMileage_KH_EntityAddress
   ${{ if eq( parameters.CompanyMileage_KH_Trip, true ) }}:
-    testCategory: format('{0}|{1}', ${{ variables.testCategories }}, 'TestCategory=CompanyMileage_KH_Trip') 
+    - TestCategory=CompanyMileage_KH_Trip
   ${{ if eq( parameters.CompanyMileage_KH_User, true ) }}:
-    testCategory: format('{0}|{1}', ${{ variables.testCategories }}, 'TestCategory=CompanyMileage_KH_User') 
+    - TestCategory=CompanyMileage_KH_User
   ${{ if eq( parameters.Playmaker_KH, true ) }}:
-    testCategory: format('{0}|{1}', ${{ variables.testCategories }}, 'TestCategory=Playmaker_KH') 
+    - TestCategory=Playmaker_KH
 
 pool:
   vmImage: 'ubuntu-latest'
 
-
-
 steps:
-- script: echo "${{ variables.testCategories }}"
+- script: echo  ${{ join('|',variables.testCategories) }}
