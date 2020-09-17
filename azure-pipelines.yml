@@ -62,7 +62,7 @@ variables:
     CompanyMileage_KH_Trip: TestCategory=CompanyMileage_KH_Trip|
   ${{ if eq( parameters.CompanyMileage_KH_User, true ) }}:
     CompanyMileage_KH_User: TestCategory=CompanyMileage_KH_User|
-  ${{ if eq( parameters.HH_ReportAdPlaymaker_KHmin, true ) }}:
+  ${{ if eq( parameters.Playmaker_KH, true ) }}:
     Playmaker_KH: TestCategory=Playmaker_KH|
 
 pool:
