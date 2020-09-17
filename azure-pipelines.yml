@@ -70,4 +70,4 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo  ${{ join('|',variables.testCategory) }}
+- script: echo  ${{ variables.testCategory }}
