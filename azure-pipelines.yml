@@ -44,25 +44,25 @@ parameters:
     default: false 
 
 variables:
-  ${{ if ep( parameters.PDGM_ICD10_Validation, true ) }}:
+  ${{ if eq( parameters.PDGM_ICD10_Validation, true ) }}:
     PDGM_ICD10_Validation: TestCategory=PDGM_ICD10_Validation|
-  ${{ if ep( parameters.HH_ReportAdmin, true ) }}:
+  ${{ if eq( parameters.HH_ReportAdmin, true ) }}:
     HH_ReportAdmin: TestCategory=HH_ReportAdmin|
-  ${{ if ep( parameters.CompanyMileage_HH_EntityAddress, true ) }}:
+  ${{ if eq( parameters.CompanyMileage_HH_EntityAddress, true ) }}:
     CompanyMileage_HH_EntityAddress: TestCategory=CompanyMileage_HH_EntityAddress|
-  ${{ if ep( parameters.CompanyMileage_HH_Trip, true ) }}:
+  ${{ if eq( parameters.CompanyMileage_HH_Trip, true ) }}:
     CompanyMileage_HH_Trip: TestCategory=CompanyMileage_HH_Trip|
-  ${{ if ep( parameters.CompanyMileage_HH_User, true ) }}:
+  ${{ if eq( parameters.CompanyMileage_HH_User, true ) }}:
     CompanyMileage_HH_User: TestCategory=CompanyMileage_HH_User|
-  ${{ if ep( parameters.CompanyMileage_HHH, true ) }}:
+  ${{ if eq( parameters.CompanyMileage_HHH, true ) }}:
     CompanyMileage_HHH: TestCategory=CompanyMileage_HHH|
-  ${{ if ep( parameters.CompanyMileage_KH_EntityAddress, true ) }}:
+  ${{ if eq( parameters.CompanyMileage_KH_EntityAddress, true ) }}:
     CompanyMileage_KH_EntityAddress: TestCategory=CompanyMileage_KH_EntityAddress|
-  ${{ if ep( parameters.CompanyMileage_KH_Trip, true ) }}:
+  ${{ if eq( parameters.CompanyMileage_KH_Trip, true ) }}:
     CompanyMileage_KH_Trip: TestCategory=CompanyMileage_KH_Trip|
-  ${{ if ep( parameters.CompanyMileage_KH_User, true ) }}:
+  ${{ if eq( parameters.CompanyMileage_KH_User, true ) }}:
     CompanyMileage_KH_User: TestCategory=CompanyMileage_KH_User|
-  ${{ if ep( parameters.HH_ReportAdPlaymaker_KHmin, true ) }}:
+  ${{ if eq( parameters.HH_ReportAdPlaymaker_KHmin, true ) }}:
     Playmaker_KH: TestCategory=Playmaker_KH|
 
 pool:
