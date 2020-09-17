@@ -43,4 +43,30 @@ parameters:
     type: boolean
     default: false 
 
+variables:
+  ${{ if ep( parameters.PDGM_ICD10_Validation, true ) }}:
+    PDGM_ICD10_Validation: TestCategory=PDGM_ICD10_Validation|
+  ${{ if ep( parameters.HH_ReportAdmin, true ) }}:
+    HH_ReportAdmin: TestCategory=HH_ReportAdmin|
+  ${{ if ep( parameters.CompanyMileage_HH_EntityAddress, true ) }}:
+    CompanyMileage_HH_EntityAddress: TestCategory=CompanyMileage_HH_EntityAddress|
+  ${{ if ep( parameters.CompanyMileage_HH_Trip, true ) }}:
+    CompanyMileage_HH_Trip: TestCategory=CompanyMileage_HH_Trip|
+  ${{ if ep( parameters.CompanyMileage_HH_User, true ) }}:
+    CompanyMileage_HH_User: TestCategory=CompanyMileage_HH_User|
+  ${{ if ep( parameters.CompanyMileage_HHH, true ) }}:
+    CompanyMileage_HHH: TestCategory=CompanyMileage_HHH|
+  ${{ if ep( parameters.CompanyMileage_KH_EntityAddress, true ) }}:
+    CompanyMileage_KH_EntityAddress: TestCategory=CompanyMileage_KH_EntityAddress|
+  ${{ if ep( parameters.CompanyMileage_KH_Trip, true ) }}:
+    CompanyMileage_KH_Trip: TestCategory=CompanyMileage_KH_Trip|
+  ${{ if ep( parameters.CompanyMileage_KH_User, true ) }}:
+    CompanyMileage_KH_User: TestCategory=CompanyMileage_KH_User|
+  ${{ if ep( parameters.HH_ReportAdPlaymaker_KHmin, true ) }}:
+    Playmaker_KH: TestCategory=Playmaker_KH|
 
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: echo ${{ variables.PDGM_ICD10_Validation }}${{ variables.HH_ReportAdmin }}${{ variables.CompanyMileage_HH_EntityAddress }}${{ variables.CompanyMileage_HH_Trip }}${{ variables.CompanyMileage_HH_User }}${{ variables.CompanyMileage_HHH }}${{ variables.CompanyMileage_KH_EntityAddress }}${{ variables.CompanyMileage_KH_Trip }}${{ variables.CompanyMileage_KH_User }}${{ variables.Playmaker_KH }}
